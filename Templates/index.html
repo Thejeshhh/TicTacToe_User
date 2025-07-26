@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Player Names</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="description" content="Enter player names to start a Tic Tac Toe game.">
+    <meta name="keywords" content="tic tac toe, game, players, start">
+</head>
+<body>
+    <div class="container">
+        <h1 tabindex="0">Welcome to Tic Tac Toe!</h1>
+        <div class="flash-messages" aria-live="polite">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <form action="{{ url_for('start_game') }}" method="POST" class="player-form">
+            <div class="form-group">
+                <label for="player1_name">Player X Name:</label>
+                <input type="text" id="player1_name" name="player1_name" placeholder="Enter Player X Name" required aria-required="true" maxlength="50">
+            </div>
+            <div class="form-group">
+                <label for="player2_name">Player O Name:</label>
+                <input type="text" id="player2_name" name="player2_name" placeholder="Enter Player O Name" required aria-required="true" maxlength="50">
+            </div>
+            <button type="submit" class="start-button" aria-label="Start Game">Start Game</button>
+        </form>
+    </div>
+</body>
+</html>

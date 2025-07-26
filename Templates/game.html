@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="description" content="Play Tic Tac Toe, view game history and leaderboard.">
+    <meta name="keywords" content="tic tac toe, game board, leaderboard, move history, X, O">
+</head>
+<body>
+    <div class="game-container">
+        <div class="panel left-panel" role="region" aria-labelledby="leaderboard-heading">
+            <h2 id="leaderboard-heading">Player Stats</h2>
+            <div class="current-player-stats-display">
+                <p><strong>{{ current_game_stats['X_name'] }} (X) Wins:</strong> <span id="current-x-wins">{{ current_game_stats['session_x_wins'] }}</span></p>
+                <p><strong>{{ current_game_stats['O_name'] }} (O) Wins:</strong> <span id="current-o-wins">{{ current_game_stats['session_o_wins'] }}</span></p>
+                <hr>
+                <p><strong>Draws (this session):</strong> <span id="session-draws">{{ current_game_stats['session_draws'] }}</span></p>
+                <p><strong>Total Matches (this session):</strong> <span id="session-total-matches">{{ current_game_stats['session_total_matches'] }}</span></p>
+            </div>
+        </div>
+
+        <div class="panel center-panel" role="main" aria-labelledby="game-info-heading">
+            <div class="flash-messages" aria-live="polite">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+            <h2 id="game-info-heading">{{ players['X'] }} (X) vs {{ players['O'] }} (O)</h2>
+            <p id="current-player-display" aria-live="polite">Current Player: <span id="current-player">{{ players[game.current_player] }} ({{ game.current_player }})</span></p>
+            <p id="game-result" aria-live="polite"></p>
+
+            <div class="game-board" id="game-board" role="grid" aria-label="Tic Tac Toe Game Board">
+                {% for i in range(9) %}
+                    <div class="cell {% if game.board[i] %}filled{% endif %}" data-index="{{ i }}" role="gridcell" aria-label="Cell {{ i + 1 }}" {% if game.board[i] %}aria-disabled="true"{% endif %}>
+                        {{ game.board[i] }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="game-buttons">
+                <button id="reset-board-button" class="reset-button" aria-label="Reset Board">Reset Board</button>
+                <a href="{{ url_for('index') }}" class="new-game-button" aria-label="Start a New Game">Start New Game</a>
+            </div>
+        </div>
+
+        <div class="panel right-panel" role="region" aria-labelledby="history-heading">
+            <h2 id="history-heading">Move History</h2>
+            <ul id="move-history" aria-live="polite">
+                {% for move in game.move_history %}
+                    <li>{{ move }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <audio id="move-sound" src="{{ url_for('static', filename='sounds/WaterDrop.wav') }}" preload="auto" aria-hidden="true"></audio>
+    <audio id="win-sound" src="{{ url_for('static', filename='sounds/win_sound.wav') }}" preload="auto" aria-hidden="true"></audio>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

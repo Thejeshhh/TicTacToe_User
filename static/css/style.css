@@ -1,0 +1,460 @@
+:root {
+    /* Original Green Theme Colors Restored */
+    --primary-color: #76ff03; /* Bright Lime Green for primary actions/wins */
+    --secondary-color: #00e5ff; /* Cyan for headers, X player */
+    --accent-color: #ffea00; /* Amber for O player */
+
+    --text-color: #E0E0E0; /* Light grey for general text */
+    --light-text-color: #A0A0A0; /* Slightly darker light grey for sub-text */
+    --dark-text-color: #1a1a1a; /* Very dark for text on bright backgrounds */
+
+    --bg-darkest: #1F252D; /* Deep blue-grey for body background */
+    --bg-dark: #2A3038; /* Slightly lighter blue-grey for panels/containers */
+    --bg-medium: #353B44; /* Medium blue-grey for board background */
+    --bg-light: #414750; /* Light blue-grey for cells/elements */
+
+    --border-color: #555c66; /* Darker border */
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.3); /* Darker shadows */
+    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.5); /* Stronger shadows */
+    --shadow-inset: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-darkest);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to top for better content flow */
+    min-height: 100vh;
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-y: auto; /* Enable scrolling if content overflows */
+}
+
+/* Flash Messages */
+.flash-messages {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.flash {
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.flash-success {
+    background-color: var(--primary-color); /* Restored Green */
+    color: var(--dark-text-color);
+    border: 1px solid #5a9b00;
+}
+
+.flash-error {
+    background-color: #ff1744; /* Bright Red */
+    color: var(--dark-text-color);
+    border: 1px solid #b71c1c;
+}
+
+.flash-info {
+    background-color: var(--secondary-color); /* Cyan */
+    color: var(--dark-text-color);
+    border: 1px solid #00b8d4;
+}
+
+/* General Container Styling */
+.container {
+    background-color: var(--bg-dark);
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-medium);
+    text-align: center;
+    width: 100%;
+    max-width: 550px;
+}
+
+.container h1 {
+    color: var(--primary-color); /* Restored Green */
+    margin-bottom: 35px;
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.player-form .form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.player-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--light-text-color);
+    font-size: 1.1em;
+}
+
+.player-form input[type="text"] {
+    width: calc(100% - 24px);
+    padding: 14px 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-light);
+    color: var(--text-color);
+    border-radius: 10px;
+    font-size: 1.1em;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.player-form input[type="text"]:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.25);
+    outline: none;
+}
+
+.start-button {
+    background-color: var(--primary-color); /* Restored Green */
+    color: var(--dark-text-color);
+    padding: 16px 35px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.3em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    width: 100%;
+    margin-top: 25px;
+    box-shadow: 0 5px 15px rgba(118, 255, 3, 0.4);
+}
+
+.start-button:hover {
+    background-color: #8cff33; /* Slightly lighter */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(118, 255, 3, 0.6);
+}
+
+.start-button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(118, 255, 3, 0.3);
+}
+
+/* Game Board Specific Styles */
+.game-container {
+    display: flex;
+    gap: 25px; /* Reduced gap between panels */
+    width: 100%;
+    max-width: 1300px;
+    background-color: var(--bg-dark);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-medium);
+    flex-wrap: wrap; /* Allow wrapping for responsiveness */
+    align-items: flex-start;
+}
+
+.panel {
+    padding: 20px; /* Reduced padding */
+    border-radius: 12px;
+    background-color: var(--bg-dark);
+    box-shadow: var(--shadow-inset);
+    flex-grow: 1;
+    min-width: 280px;
+    border: 1px solid var(--border-color);
+    display: flex; /* Use flex for internal alignment of elements */
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+}
+
+.left-panel {
+    flex: 1;
+    gap: 10px; /* Adjusted gap for elements inside */
+}
+
+.center-panel {
+    flex: 3; /* Give more flex share to the center panel */
+    gap: 15px; /* Adjusted gap */
+    min-width: 320px; /* Ensure it doesn't shrink too much */
+    max-width: 650px; /* Cap center panel size for large screens */
+    width: 100%; /* Important for scaling within flex container */
+    padding-top: 15px; /* Reduced top padding */
+    padding-bottom: 15px; /* Reduced bottom padding */
+}
+
+.right-panel {
+    flex: 1;
+    gap: 10px; /* Adjusted gap for elements inside */
+}
+
+h2, h3 {
+    color: var(--secondary-color);
+    margin-top: 0;
+    margin-bottom: 15px; /* Reduced margin */
+    font-size: 1.9em;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    width: 100%; /* Ensure headings take full width */
+}
+
+h3 {
+    font-size: 1.4em;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.current-player-stats-display {
+    width: 100%; /* Take full width of its panel */
+    text-align: left; /* Align text within it to left */
+}
+
+.current-player-stats-display p {
+    margin: 6px 0; /* Reduced margin */
+    font-size: 1.1em;
+    color: var(--light-text-color);
+}
+
+.current-player-stats-display strong {
+    color: var(--primary-color); /* Restored Green */
+}
+
+hr {
+    border: none;
+    border-top: 1px dashed var(--border-color);
+    margin: 15px 0; /* Reduced margin */
+    width: 100%;
+}
+
+
+#game-info-heading { /* Top heading in center panel */
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 10px; /* Reduced margin */
+    text-align: center;
+    padding-top: 0; /* Ensure no extra top padding */
+}
+#current-player-display {
+    color: var(--light-text-color);
+    font-size: 1.3em;
+    margin-bottom: 10px; /* Reduced margin */
+}
+
+#game-result {
+    color: var(--primary-color); /* Restored Green */
+    font-size: 1.7em;
+    animation: pulse 1.5s infinite alternate;
+    margin-bottom: 15px; /* Adjusted margin */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.02); opacity: 0.9; }
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(80px, 1fr)); /* Dynamic cells */
+    grid-template-rows: repeat(3, minmax(80px, 1fr));
+    gap: 12px;
+    background-color: var(--bg-medium);
+    border: 3px solid var(--border-color);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: var(--shadow-medium);
+    width: 100%; /* Takes full width of center panel */
+    max-width: 500px; /* Max size for the board itself */
+    aspect-ratio: 1 / 1; /* Keep it perfectly square */
+}
+
+.cell {
+    width: auto; /* Let grid define size */
+    height: auto; /* Let grid define size */
+    background-color: var(--bg-light);
+    border-radius: 20px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(2.5em, 8vw, 4em); /* Dynamic font size for cells */
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: var(--secondary-color); /* Default color for X */
+}
+
+.cell:hover:not(.filled) {
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+}
+
+.cell.filled {
+    cursor: not-allowed;
+    background-color: var(--bg-medium);
+}
+
+.cell:nth-child(even) {
+    color: var(--accent-color);
+}
+
+/* New container for game buttons to arrange them side-by-side */
+.game-buttons {
+    display: flex;
+    gap: 15px; /* Gap between buttons */
+    margin-top: 20px; /* Adjusted margin to bring them up slightly */
+    justify-content: center; /* Center buttons horizontally */
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+
+/* Common button styles */
+.reset-button, .new-game-button {
+    padding: 14px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    color: var(--dark-text-color); /* Ensure dark text on bright buttons */
+}
+
+.reset-button {
+    background-color: #ff1744; /* Bright Red */
+    box-shadow: 0 4px 12px rgba(255, 23, 68, 0.3);
+}
+
+.reset-button:hover {
+    background-color: #ff4a6a; /* Lighter red on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 23, 68, 0.4);
+}
+
+.reset-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 23, 68, 0.2);
+}
+
+.new-game-button {
+    background-color: var(--secondary-color); /* Cyan for New Game button */
+    box-shadow: 0 4px 12px rgba(0, 229, 255, 0.3);
+}
+
+.new-game-button:hover {
+    background-color: #00b8d4; /* Darker cyan on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 229, 255, 0.4);
+}
+
+#move-history {
+    list-style-type: none;
+    padding: 0;
+    max-height: 400px; /* Maintain max height */
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    background-color: var(--bg-light);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Take full width of its panel */
+    box-sizing: border-box; /* Include padding/border in width */
+}
+
+#move-history li {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-color);
+    color: var(--text-color);
+    font-size: 1em;
+}
+
+#move-history li:last-child {
+    border-bottom: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    body {
+        padding: 15px;
+    }
+    .game-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px; /* Overall gap between stacked panels */
+        padding: 25px;
+    }
+
+    .panel {
+        width: 100%;
+        max-width: 550px; /* Max width for stacked panels */
+        padding: 20px;
+    }
+    .center-panel {
+        max-width: 550px; /* Ensure center panel matches others when stacked */
+        padding-top: 20px; /* Adjust padding for stacked view */
+        padding-bottom: 20px;
+    }
+    .game-board {
+        max-width: 450px; /* Adjust max width for slightly smaller screens */
+        padding: 15px;
+        gap: 10px;
+    }
+    .game-buttons {
+        margin-top: 20px; /* Adjust margin for stacked layout */
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    .container, .game-container {
+        padding: 15px;
+    }
+    .game-board {
+        grid-template-columns: repeat(3, minmax(70px, 1fr));
+        grid-template-rows: repeat(3, minmax(70px, 1fr));
+        gap: 8px;
+        padding: 10px;
+        max-width: 300px; /* Further reduce max-width for very small screens */
+    }
+    .cell {
+        font-size: clamp(1.8em, 8vw, 2.5em); /* Adjust font for very small screens */
+        border-radius: 12px;
+    }
+    .start-button, .reset-button, .new-game-button {
+        padding: 12px 20px;
+        font-size: 1.0em;
+        margin-top: 15px; /* Smaller margin for buttons */
+    }
+    h1 { font-size: 2em; margin-bottom: 25px;}
+    h2 { font-size: 1.5em; margin-bottom: 15px;}
+    h3 { font-size: 1.1em; margin-bottom: 10px;}
+    .current-player-stats-display p {
+        font-size: 1em;
+        margin: 6px 0;
+    }
+    hr {
+        margin: 15px 0;
+    }
+    #game-info-heading, #current-player-display, #game-result {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+    #game-result {
+        font-size: 1.4em;
+    }
+    .game-buttons {
+        flex-direction: column; /* Stack buttons vertically on very small screens */
+        gap: 10px;
+        width: 100%; /* Make buttons full width when stacked */
+    }
+    .reset-button, .new-game-button {
+        width: 100%; /* Ensure buttons fill width when stacked */
+    }
+}
